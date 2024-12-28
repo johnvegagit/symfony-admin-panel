@@ -1,3 +1,125 @@
+/** Import inter font family **/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #444;
+    list-style: none;
+    text-decoration: none;
+}
+
 body {
-    background-color: skyblue;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#sideNave {
+    width: 195px;
+    min-height: 606px;
+    background-color: #151515;
+
+    & ul {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px;
+
+        & li {
+
+            & a {
+                width: 100%;
+                position: relative;
+                color: #f3f3f3;
+                display: flex;
+                justify-content: end;
+                align-items: center;
+
+                &:hover {
+
+                    /* text-decoration: underline; */
+                    &::after {
+                        content: '-->';
+                    }
+                }
+            }
+        }
+    }
+}
+
+#mainContent {
+    padding: 15px;
+
+    & .table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+
+        & tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+
+        & th {
+            background-color: #04AA6D;
+            color: #fff;
+        }
+
+        & th,
+        td {
+            padding: 5px;
+        }
+    }
+
+    & form {
+        width: 340px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        & #product {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            border: 1px solid #ccc;
+
+            & div {
+                display: flex;
+                flex-direction: column;
+
+                & label {
+                    font-size: 14px;
+                }
+
+                & input {
+                    width: 100%;
+                    padding: 7px 10px;
+                }
+
+                & textarea {
+                    width: 100%;
+                    padding: 7px 10px;
+                    font-size: 13px;
+                }
+            }
+        }
+
+        & .btn {
+            width: 150px;
+            padding: 7px 17px;
+        }
+    }
+
+    & ._product-links {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+    }
 }
