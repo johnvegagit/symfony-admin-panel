@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\StatusEnum;
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,8 +27,16 @@ class Product
     #[ORM\Column]
     private ?int $stock = null;
 
+    #[ORM\Column(type: "string", enumType: StatusEnum::class, nullable: true)]
+    private ?StatusEnum $status = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $creat_at = null;
+
+    public function __construct()
+    {
+        $this->status = StatusEnum::Active; // Asignar el valor por defecto
+    }
 
     public function getId(): ?int
     {
@@ -79,6 +88,17 @@ class Product
     {
         $this->stock = $stock;
 
+        return $this;
+    }
+
+    public function getStatus(): ?StatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?StatusEnum $status): self
+    {
+        $this->status = $status;
         return $this;
     }
 
