@@ -24,6 +24,9 @@ class Product
     private ?int $price = null;
 
     #[ORM\Column]
+    private ?int $stock = null;
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $creat_at = null;
 
     public function getId(): ?int
@@ -63,6 +66,18 @@ class Product
     public function setPrice(int $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): self
+    {
+        $this->stock = $stock;
 
         return $this;
     }
