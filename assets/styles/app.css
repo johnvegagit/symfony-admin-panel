@@ -120,13 +120,23 @@ body {
         }
     }
 
+    & .c-table {
+        & tr {
+            & th {
+                width: 190px;
+                text-align: start;
+            }
+        }
+    }
+
     & form {
         width: 340px;
         display: flex;
         flex-direction: column;
         gap: 10px;
 
-        & #product {
+        & #product,
+        #customer {
             display: flex;
             flex-direction: column;
             gap: 10px;

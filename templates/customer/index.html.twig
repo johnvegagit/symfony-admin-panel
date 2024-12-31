@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Customer table{% endblock %}
+
+{% block body %}
+<main id="mainContent">
+
+    <div class="header">
+		<div class="linksCont"> 
+			<h2><a href="{{ path('app_customer_index') }}">Customer table</a></h2>
+			<a href="{{ path('app_customer_new') }}">Create new <i class="bi bi-plus"></i></a>
+		</div>
+
+		<form class="searchForm" method="get" action="{{ path('app_customer_index') }}">
+			<input type="text" name="search" value="{{ search }}" placeholder="Search...">
+			<button type="submit"><i class="bi bi-search"></i></button>
+		</form>
+	</div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Created_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for customer in pagination.items %}
+            <tr>
+                <td>{{ customer.id }}</td>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.role }}</td>
+                <td>{{ customer.createdAt ? customer.createdAt|date('Y-m-d') : '' }}</td>
+                <td class="action-link">
+                    <a href="{{ path('app_customer_show', {'id': customer.id}) }}"><i class="bi bi-eye"></i></a>
+                    <a href="{{ path('app_customer_edit', {'id': customer.id}) }}"><i class="bi bi-pencil-square"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+     <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+</main>
+{% endblock %}
