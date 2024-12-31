@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\SearchType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,10 +16,28 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProductController extends AbstractController
 {
     #[Route(name: 'app_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
+    public function index(Request $request, ProductRepository $productRepository): Response
     {
+        $form = $this->createForm(SearchType::class, null, [
+            'method' => 'GET', // Aquí cambias a GET
+            'attr' => [
+                'class' => 'searchForm',
+            ],
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $searchTerm = $form->get('query')->getData(); // Esto debería funcionar si el formulario está bien definido
+            dump($searchTerm); // Depura el valor para verificar que se envía correctamente
+            $products = $productRepository->findBySearchTerm($searchTerm);
+        } else {
+            $products = $productRepository->findAll();
+            dump($request->request->all());
+        }
+
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'form' => $form->createView(),
+            'products' => $products,
         ]);
     }
 
@@ -71,7 +90,7 @@ final class ProductController extends AbstractController
     #[Route('/{id}', name: 'app_product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($product);
             $entityManager->flush();
         }
