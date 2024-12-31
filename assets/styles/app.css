@@ -56,12 +56,23 @@ body {
 #mainContent {
     width: 100%;
     padding: 15px;
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    gap: 15px;
 
     & .header {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        & .linksCont {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 15px;
+        }
 
         & .searchForm {
             width: unset;
@@ -77,6 +88,7 @@ body {
             }
 
             & button {
+                padding: 7px 10px;
                 width: unset;
             }
         }
@@ -94,6 +106,12 @@ body {
         & th {
             background-color: #04AA6D;
             color: #fff;
+        }
+
+        & .action-link {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
         }
 
         & th,

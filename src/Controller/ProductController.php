@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
-use App\Form\SearchType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,28 +16,30 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProductController extends AbstractController
 {
     #[Route(name: 'app_product_index', methods: ['GET'])]
-    public function index(Request $request, ProductRepository $productRepository): Response
+    public function index(Request $request, ProductRepository $productRepository, PaginatorInterface $paginator): Response
     {
-        $form = $this->createForm(SearchType::class, null, [
-            'method' => 'GET', // Aquí cambias a GET
-            'attr' => [
-                'class' => 'searchForm',
-            ],
-        ]);
-        $form->handleRequest($request);
+        $searchTerm = $request->query->get('search', null);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $searchTerm = $form->get('query')->getData(); // Esto debería funcionar si el formulario está bien definido
-            dump($searchTerm); // Depura el valor para verificar que se envía correctamente
-            $products = $productRepository->findBySearchTerm($searchTerm);
+        if ($searchTerm) {
+            // Busca productos con el término de búsqueda
+            $queryBuilder = $productRepository->createQueryBuilder('p')
+                ->where('p.title LIKE :search OR p.description LIKE :search')
+                ->setParameter('search', '%' . $searchTerm . '%');
         } else {
-            $products = $productRepository->findAll();
-            dump($request->request->all());
+            // Obtén todos los productos
+            $queryBuilder = $productRepository->createQueryBuilder('p');
         }
 
+        // Paginar los resultados
+        $pagination = $paginator->paginate(
+            $queryBuilder, // Consulta o QueryBuilder
+            $request->query->getInt('page', 1), // Página actual, por defecto 1
+            5 // Número de resultados por página
+        );
+
         return $this->render('product/index.html.twig', [
-            'form' => $form->createView(),
-            'products' => $products,
+            'pagination' => $pagination,
+            'search' => $searchTerm,
         ]);
     }
 
