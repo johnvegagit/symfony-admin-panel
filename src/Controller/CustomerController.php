@@ -54,6 +54,16 @@ final class CustomerController extends AbstractController
             $entityManager->persist($customer);
             $entityManager->flush();
 
+            $this->addFlash(
+                'success',
+                'Your changes were saved!'
+            );
+
+            $this->addFlash(
+                'error',
+                'Error adding new customers!'
+            );
+
             return $this->redirectToRoute('app_customer_index', [], Response::HTTP_SEE_OTHER);
         }
 

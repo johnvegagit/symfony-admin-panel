@@ -17,6 +17,21 @@ body {
     flex-direction: row;
 }
 
+.flash-message-success {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #04AA6D10;
+    color: #04AA6D;
+}
+
+.flash-message-error {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #aa040410;
+    color: #aa0404;
+}
+
+
 #sideNave {
     width: 230px;
     min-height: 606px;

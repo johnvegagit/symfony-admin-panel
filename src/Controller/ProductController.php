@@ -54,6 +54,16 @@ final class ProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
 
+            $this->addFlash(
+                'success',
+                'Your changes were saved!'
+            );
+
+            $this->addFlash(
+                'error',
+                'Error adding new product!'
+            );
+
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 

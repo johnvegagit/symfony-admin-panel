@@ -1,56 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Product index
+{% endblock %}
 
 {% block body %}
-<main id="mainContent">
+	<main id="mainContent">
 
-	<div class="header">
-		<div class="linksCont"> 
-			<h2><a href="{{ path('app_product_index') }}">Product table</a></h2>
-			<a href="{{ path('app_product_new') }}">Create new <i class="bi bi-plus"></i></a>
+		{% for label, messages in app.flashes(['success', 'error']) %}
+			{% for message in messages %}
+				<div class="flash-message-{{ label }}">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endfor %}
+
+		<div class="header">
+			<div class="linksCont">
+				<h2>
+					<a href="{{ path('app_product_index') }}">Product table</a>
+				</h2>
+				<a href="{{ path('app_product_new') }}">Create new
+					<i class="bi bi-plus"></i>
+				</a>
+			</div>
+
+			<form class="searchForm" method="get" action="{{ path('app_product_index') }}">
+				<input type="text" name="search" value="{{ search }}" placeholder="Search...">
+				<button type="submit">
+					<i class="bi bi-search"></i>
+				</button>
+			</form>
 		</div>
 
-		<form class="searchForm" method="get" action="{{ path('app_product_index') }}">
-			<input type="text" name="search" value="{{ search }}" placeholder="Search...">
-			<button type="submit"><i class="bi bi-search"></i></button>
-		</form>
-	</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Title</th>
+					<th>Description</th>
+					<th>stock</th>
+					<th>Created At</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for product in pagination.items %}
+					<tr>
+						<td>{{ product.id }}</td>
+						<td>{{ product.title }}</td>
+						<td>{{ product.description }}</td>
+						<td>{{ product.stock }}</td>
+						<td>{{ product.creatAt ? product.creatAt|date('Y-m-d H:i:s') : '' }}</td>
+						<td class="action-link">
+							<a href="{{ path('app_product_show', {'id': product.id}) }}">
+								<i class="bi bi-eye"></i>
+							</a>
+							<a href="{{ path('app_product_edit', {'id': product.id}) }}">
+								<i class="bi bi-pencil-square"></i>
+							</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">No records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>stock</th>
-                <th>Created At</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in pagination.items %}
-                <tr>
-                    <td>{{ product.id }}</td>
-                    <td>{{ product.title }}</td>
-                    <td>{{ product.description }}</td>
-                    <td>{{ product.stock }}</td>
-                    <td>{{ product.creatAt ? product.creatAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td class="action-link">
-                        <a href="{{ path('app_product_show', {'id': product.id}) }}"><i class="bi bi-eye"></i></a>
-                        <a href="{{ path('app_product_edit', {'id': product.id}) }}"><i class="bi bi-pencil-square"></i></a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">No records found</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <div class="pagination">
-        {{ knp_pagination_render(pagination) }}
-    </div>
-</main>
+		<div class="pagination">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	</main>
 {% endblock %}
