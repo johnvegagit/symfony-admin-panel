@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CustomerRoleEnum;
 use App\Repository\CustomerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,11 +24,16 @@ class Customer
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $role = null;
+    #[ORM\Column(type: "string", enumType: CustomerRoleEnum::class, nullable: true)]
+    private ?CustomerRoleEnum $role = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
+
+    public function __construct()
+    {
+        $this->role = CustomerRoleEnum::Client; // Asignar el valor por defecto
+    }
 
     public function getId(): ?int
     {
@@ -70,15 +76,14 @@ class Customer
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRole(): ?CustomerRoleEnum
     {
         return $this->role;
     }
 
-    public function setRole(string $role): static
+    public function setRole(?CustomerRoleEnum $role): self
     {
         $this->role = $role;
-
         return $this;
     }
 

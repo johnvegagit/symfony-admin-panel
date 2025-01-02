@@ -1,44 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Customer{% endblock %}
+{% block title %}Customer
+{% endblock %}
 
 {% block body %}
-<main id="mainContent">
-    <h1>Customer</h1>
+	<main id="mainContent">
+		<h1>Customer</h1>
 
-    <table class="table c-table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ customer.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ customer.name }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ customer.email }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ customer.password }}</td>
-            </tr>
-            <tr>
-                <th>Role</th>
-                <td>{{ customer.role }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ customer.createdAt ? customer.createdAt|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+		<table class="table c-table">
+			<tbody>
+				<tr>
+					<th>Id</th>
+					<td>{{ customer.id }}</td>
+				</tr>
+				<tr>
+					<th>Name</th>
+					<td>{{ customer.name }}</td>
+				</tr>
+				<tr>
+					<th>Email</th>
+					<td>{{ customer.email }}</td>
+				</tr>
+				<tr>
+					<th>Password</th>
+					<td>{{ customer.password }}</td>
+				</tr>
+				<tr>
+					<th>Role</th>
+					<td>
+						{% if customer.role is not null %}
+							{{customer.role.value}}
+						{% else %}
+							No seleccionado
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Created_at</th>
+					<td>{{ customer.createdAt ? customer.createdAt|date('Y-m-d') : '' }}</td>
+				</tr>
+			</tbody>
+		</table>
 
-    <a href="{{ path('app_customer_index') }}">back to list</a>
+		<a href="{{ path('app_customer_index') }}">back to list</a>
 
-    <a href="{{ path('app_customer_edit', {'id': customer.id}) }}">edit</a>
+		<a href="{{ path('app_customer_edit', {'id': customer.id}) }}">edit</a>
 
-    {{ include('customer/_delete_form.html.twig') }}
-</main>
+		{{ include('customer/_delete_form.html.twig') }}
+	</main>
 {% endblock %}
