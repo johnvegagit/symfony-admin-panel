@@ -151,7 +151,8 @@ body {
         gap: 10px;
 
         & #product,
-        #customer {
+        #customer,
+        #order {
             display: flex;
             flex-direction: column;
             gap: 10px;

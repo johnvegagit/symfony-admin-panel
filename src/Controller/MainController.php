@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    #[Route('/', 'home')]
+    #[Route('/', 'app_homepage_index')]
     public function index(): Response
     {
         $title = 'Welcome to symfony admin panel';
@@ -18,23 +18,4 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/customer', 'customer')]
-    public function customers(): Response
-    {
-        $title = 'Customers page';
-
-        return $this->render('/customer/customer.html.twig', [
-            'title' => $title
-        ]);
-    }
-
-    #[Route('/order', 'order')]
-    public function orders(): Response
-    {
-        $title = 'Orders page';
-
-        return $this->render('/order/order.html.twig', [
-            'title' => $title
-        ]);
-    }
 }

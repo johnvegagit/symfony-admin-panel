@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Order page
+{% endblock %}
+
+{% block body %}
+	<main id="mainContent">
+
+		{% for label, messages in app.flashes(['success', 'error']) %}
+			{% for message in messages %}
+				<div class="flash-message-{{ label }}">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endfor %}
+
+		<div class="header">
+			<div class="linksCont">
+				<h2>
+					<a href="{{ path('app_order_index') }}">Order table</a>
+				</h2>
+				<a href="{{ path('app_order_new') }}">Create new
+					<i class="bi bi-plus"></i>
+				</a>
+			</div>
+
+			<form class="searchForm" method="get" action="{{ path('app_order_index') }}">
+				<input type="text" name="search" value="{{ search }}" placeholder="Search...">
+				<button type="submit">
+					<i class="bi bi-search"></i>
+				</button>
+			</form>
+		</div>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>CustomerId</th>
+					<th>ProductId</th>
+					<th>Product_name</th>
+					<th>Product_price</th>
+					<th>actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for order in pagination.items %}
+					<tr>
+						<td>{{ order.id }}</td>
+						<td>{{ order.customerId }}</td>
+						<td>{{ order.productId }}</td>
+						<td>{{ order.productName }}</td>
+						<td>{{ order.productPrice }}</td>
+						<td>
+							<a href="{{ path('app_order_show', {'id': order.id}) }}">
+								<i class="bi bi-eye"></i>
+							</a>
+							<a href="{{ path('app_order_edit', {'id': order.id}) }}">
+								<i class="bi bi-pencil-square"></i>
+							</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="pagination">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	</main>
+{% endblock %}
